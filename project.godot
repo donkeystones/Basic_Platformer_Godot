@@ -25,6 +25,10 @@ window/stretch/scale=4.0
 
 project/assembly_name="Basic Platformer"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/AS2P/plugin.cfg")
+
 [input]
 
 ui_left={
