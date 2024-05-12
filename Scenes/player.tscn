@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://b6xhobjymrlv6"]
+
+[ext_resource type="Texture2D" uid="uid://cw3vki0v41yky" path="res://assets/1 Woodcutter/Woodcutter_idle.png" id="1_5lymj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5vfto"]
+atlas = ExtResource("1_5lymj")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bejy"]
+atlas = ExtResource("1_5lymj")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kir7"]
+atlas = ExtResource("1_5lymj")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vblyf"]
+atlas = ExtResource("1_5lymj")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ndjd5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5vfto")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bejy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kir7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vblyf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_erko4"]
+size = Vector2(18, 32)
+
+[node name="Player" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ndjd5")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.934776
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_erko4")
