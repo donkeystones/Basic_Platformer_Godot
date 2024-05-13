@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 
 window/size/mode=2
 window/stretch/mode="canvas_items"
-window/stretch/scale=4.0
 
 [dotnet]
 
@@ -27,7 +26,7 @@ project/assembly_name="Basic Platformer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AS2P/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 
