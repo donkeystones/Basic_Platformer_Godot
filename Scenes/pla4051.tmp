@@ -1,64 +1,37 @@
-[gd_scene load_steps=26 format=3 uid="uid://b6xhobjymrlv6"]
+[gd_scene load_steps=23 format=3 uid="uid://b6xhobjymrlv6"]
 
 [ext_resource type="Texture2D" uid="uid://cw3vki0v41yky" path="res://assets/1 Woodcutter/Woodcutter_idle.png" id="1_5lymj"]
-[ext_resource type="Texture2D" uid="uid://bofk1c0ljbd1n" path="res://assets/1 Woodcutter/Woodcutter_run.png" id="3_wo7oq"]
 [ext_resource type="Texture2D" uid="uid://d2ray3fjh82n" path="res://assets/1 Woodcutter/Woodcutter_jump.png" id="3_wtkl6"]
 [ext_resource type="Texture2D" uid="uid://bbm56t7ue55uk" path="res://assets/1 Woodcutter/Woodcutter_walk.png" id="5_b6g0v"]
 
 [sub_resource type="GDScript" id="GDScript_55gho"]
 script/source = "extends CharacterBody2D
 
-const SPEED = 50.0
-const RUN_SPEED = 200.0;
-const JUMP_VELOCITY = -300.0
+const SPEED = 100.0
+const JUMP_VELOCITY = -200.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
-@onready var anim = $AnimatedSprite2D;
-var direction;
-var running = false;
+
 
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
-	running = Input.is_action_pressed(\"run\");
+
 	# Handle jump.
 	if Input.is_action_just_pressed(\"ui_jump\") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	direction = Input.get_axis(\"ui_left\", \"ui_right\")
-	if running:
-		velocity.x = direction * RUN_SPEED
+	var direction = Input.get_axis(\"ui_left\", \"ui_right\")
+	if direction:
+		velocity.x = direction * SPEED
 	else:
-		velocity.x = direction * SPEED;
-	
-	move_and_slide();
-	handle_animations();
-	handle_direction();
+		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-func handle_direction():
-	anim.flip_h = (direction == -1);
-	
-
-func handle_animations():
-	if velocity.y < 0:
-		anim.play(\"up\");
-	elif velocity.y > 0:
-		anim.play(\"down\");
-	elif running:
-		anim.play(\"run\");
-	elif velocity.y == 0 and direction != 0:
-		anim.play(\"walk\");
-	else:
-		anim.play(\"idle\");
-"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wn52c"]
-atlas = ExtResource("3_wtkl6")
-region = Rect2(192, 0, 48, 48)
+	move_and_slide()"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nghd3"]
 atlas = ExtResource("1_5lymj")
@@ -76,33 +49,29 @@ region = Rect2(96, 0, 48, 48)
 atlas = ExtResource("1_5lymj")
 region = Rect2(144, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_chvb2"]
-atlas = ExtResource("3_wo7oq")
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qwjo"]
+atlas = ExtResource("3_wtkl6")
 region = Rect2(0, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_422er"]
-atlas = ExtResource("3_wo7oq")
+[sub_resource type="AtlasTexture" id="AtlasTexture_idnm8"]
+atlas = ExtResource("3_wtkl6")
 region = Rect2(48, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_okw7k"]
-atlas = ExtResource("3_wo7oq")
-region = Rect2(96, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tkx6j"]
-atlas = ExtResource("3_wo7oq")
-region = Rect2(144, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0kjml"]
-atlas = ExtResource("3_wo7oq")
-region = Rect2(192, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xilie"]
-atlas = ExtResource("3_wo7oq")
-region = Rect2(240, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o2rle"]
 atlas = ExtResource("3_wtkl6")
 region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psyyq"]
+atlas = ExtResource("3_wtkl6")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7k7v1"]
+atlas = ExtResource("3_wtkl6")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_686l6"]
+atlas = ExtResource("3_wtkl6")
+region = Rect2(240, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t0ae"]
 atlas = ExtResource("5_b6g0v")
@@ -132,14 +101,6 @@ region = Rect2(240, 0, 48, 48)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wn52c")
-}],
-"loop": true,
-"name": &"down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_nghd3")
 }, {
 "duration": 1.0,
@@ -157,34 +118,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_chvb2")
+"texture": SubResource("AtlasTexture_2qwjo")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_422er")
+"texture": SubResource("AtlasTexture_idnm8")
 }, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_okw7k")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tkx6j")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0kjml")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xilie")
-}],
-"loop": true,
-"name": &"run",
-"speed": 10.0
-}, {
-"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o2rle")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psyyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7k7v1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_686l6")
 }],
-"loop": false,
-"name": &"up",
-"speed": 10.0
+"loop": true,
+"name": &"jump",
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -218,8 +171,9 @@ script = SubResource("GDScript_55gho")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ndjd5")
-animation = &"run"
+animation = &"jump"
 autoplay = "idle"
+frame_progress = 0.205772
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 8)
